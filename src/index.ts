@@ -21,7 +21,9 @@ app.get('/', (_: Request, res: Response) => {
 })
 app.get('/user', async (_: Request, res: Response) => {
   const user = await prisma.user.findMany()
-  return res.status(200).json(user)
+  return res.status(200).json({
+    data: user,
+  })
 })
 
 const port = process.env.PORT || 3000

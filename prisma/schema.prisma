@@ -13,3 +13,22 @@ model User {
   name  String? @db.VarChar(255)
   email String  @unique(map: "email") @db.VarChar(255)
 }
+
+model Department {
+  department_id   String     @id @db.VarChar(2)
+  department_name String?    @db.VarChar(100)
+  Employee        Employee[]
+}
+
+model Employee {
+  emp_no        Int         @id
+  birth_date    DateTime    @db.Date
+  first_name    String      @db.VarChar(14)
+  last_name     String      @db.VarChar(16)
+  gender        String      @db.Char(1)
+  hire_date     DateTime    @db.Date
+  department_id String?     @db.VarChar(2)
+  Department    Department? @relation(fields: [department_id], references: [department_id], onUpdate: Restrict, map: "employee_fk1")
+
+  @@index([department_id], map: "employee_fk1")
+}

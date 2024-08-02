@@ -7,6 +7,15 @@ import cors from 'cors'
 import { prisma1, prisma2, prisma3 } from './database/db'
 
 
+// routes
+import departmentRouter from './route/department-route';
+
+
+// error Middleware
+import { errorHandler } from "./middlewares/error-handler";
+
+
+
 const app: Express = express()
 
 app.use(cors())
@@ -44,8 +53,8 @@ app.get('/account', async (_: Request, res: Response) => {
     // create account
     await prisma3.account.create({
       data: {
-        name: 'test',
-        email: 'naphat.d@gmail.com',
+        name: 'test111',
+        email: 'naphat.d111@gmail.com',
       },
     })
 
@@ -63,6 +72,13 @@ app.get('/account', async (_: Request, res: Response) => {
     return res.status(500).json({ message: 'เกิดข้อผิดพลาด กรุณาลองใหม่' })
   }
 })
+
+// localhost:4000/api/v1/department
+app.use("/api/v1/department", departmentRouter);
+
+// error middleware ต้องอยู่บรรทัดสุดท้ายของ user ตัวอื่นๆ เสมอ
+app.use(errorHandler);
+
 
 const port = process.env.PORT || 3000
 app.listen(port, () => {

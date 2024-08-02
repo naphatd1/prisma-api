@@ -29,8 +29,13 @@ app.get('/customer', async (_: Request, res: Response) => {
   const customer = await prisma2.customer.findMany({
     orderBy: { id: 'desc' },
   })
+  const user = await prisma1.user.findMany()
+  user.map((val) => {
+    return val.email + customer.length
+  })
   return res.status(200).json({
     data: customer,
+    map: user
   })
 })
 

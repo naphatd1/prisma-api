@@ -4,7 +4,8 @@ dotenv.config()
 import path from 'path'
 import morgan from 'morgan'
 import cors from 'cors'
-import { prisma1, prisma2 } from './database/mysql'
+import { prisma1, prisma2, prisma3 } from './database/db'
+
 
 const app: Express = express()
 
@@ -35,8 +36,32 @@ app.get('/customer', async (_: Request, res: Response) => {
   })
   return res.status(200).json({
     data: customer,
-    map: user
+    map: user,
   })
+})
+app.get('/account', async (_: Request, res: Response) => {
+  try {
+    // create account
+    await prisma3.account.create({
+      data: {
+        name: 'test',
+        email: 'naphat.d@gmail.com',
+      },
+    })
+
+    const account = await prisma3.account.findMany({
+      orderBy: { id: 'desc' },
+    })
+
+    return res.status(200).json({
+      data: account,
+    })
+  } catch (error: any) {
+    if (error.code === 'P2002') {
+      return res.status(400).json({ message: error.message })
+    }
+    return res.status(500).json({ message: 'เกิดข้อผิดพลาด กรุณาลองใหม่' })
+  }
 })
 
 const port = process.env.PORT || 3000

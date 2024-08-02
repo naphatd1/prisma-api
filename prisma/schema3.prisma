@@ -8,3 +8,12 @@ datasource db3 {
   url      = env("DATABASE_URL_3")
 }
 
+model Account {
+  id       Int      @id @default(autoincrement())
+  name     String?  @map("fullname") // ใส่เครื่องหมาย ? เป็น null // @map("fullname") เปลี่ยนชื่อ collume
+  email     String   @unique
+  role     String   @default("member") @db3.VarChar(255)
+  createAt DateTime @default(now())
+
+  @@map("accounts") //แก้ชื่อ table
+}

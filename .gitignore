@@ -2,3 +2,5 @@ node_modules
 .env
 command.txt
 command.md
+generate-client-db2
+generate-client-db3

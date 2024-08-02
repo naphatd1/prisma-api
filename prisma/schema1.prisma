@@ -1,0 +1,14 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generate-client-db3"
+}
+
+datasource db2 {
+  provider = "mysql"
+  url      = env("DATABASE_URL_CUSTOMER")
+}
+
+model Customer {
+  id   Int     @id @default(autoincrement())
+  name String? @db2.VarChar(255)
+}

@@ -4,7 +4,7 @@ dotenv.config()
 import path from 'path'
 import morgan from 'morgan'
 import cors from 'cors'
-import { prisma } from './database/mysql'
+import { prisma1, prisma2 } from './database/mysql'
 
 const app: Express = express()
 
@@ -20,9 +20,17 @@ app.get('/', (_: Request, res: Response) => {
   })
 })
 app.get('/user', async (_: Request, res: Response) => {
-  const user = await prisma.user.findMany()
+  const user = await prisma1.user.findMany()
   return res.status(200).json({
     data: user,
+  })
+})
+app.get('/customer', async (_: Request, res: Response) => {
+  const customer = await prisma2.customer.findMany({
+    orderBy: { id: 'desc' },
+  })
+  return res.status(200).json({
+    data: customer,
   })
 })
 

@@ -5,7 +5,7 @@ import path from 'path'
 import morgan from 'morgan'
 import cors from 'cors'
 import { prisma1, prisma2, prisma3 } from './database/db'
-
+import * as argon2 from 'argon2'
 
 // routes
 import departmentRouter from './route/department-route';
@@ -30,7 +30,15 @@ app.get('/', (_: Request, res: Response) => {
   })
 })
 app.get('/user', async (_: Request, res: Response) => {
+  const hash = await argon2.hash('password')
   const user = await prisma1.user.findMany()
+  await prisma1.user.create({
+    data: {
+      name: 'test421wer11',
+      email: 'naphat.d1ew45@gmail.com',
+      password: '1234'
+    },
+  })
   return res.status(200).json({
     data: user,
   })
@@ -51,6 +59,7 @@ app.get('/customer', async (_: Request, res: Response) => {
 app.get('/account', async (_: Request, res: Response) => {
   try {
     // create account
+   
     await prisma3.account.create({
       data: {
         name: 'test111',
